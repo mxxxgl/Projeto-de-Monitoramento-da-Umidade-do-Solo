@@ -7,7 +7,7 @@ const int sensorSolo = A0;
 const int buzzer = 6;      
 const int releBomba = 7;   
 
-bool modoSimulacao = true; // true para simular, false para usar sensor real
+bool modoSimulacao = true; 
 
 int lerUmidadeReal() {
   long soma = 0;
@@ -20,7 +20,7 @@ int lerUmidadeReal() {
 
 int lerUmidade() {
   if (modoSimulacao) {
-    int faixa = random(0, 3); // 0 = seco, 1 = ok, 2 = muito úmido
+    int faixa = random(0, 3); 
     switch (faixa) {
       case 0: return random(0, 300);      // solo seco
       case 1: return random(300, 700);    // solo ok
