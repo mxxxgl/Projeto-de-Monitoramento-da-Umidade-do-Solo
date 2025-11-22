@@ -7,26 +7,31 @@ const int sensorSolo = A0;
 const int buzzer = 6;      
 const int releBomba = 7;   
 
-bool modoSimulacao = false; // AGORA O SENSOR SERÁ USADO
+bool modoSimulacao = true; // true para simular, false para usar sensor real
 
+// Função para ler a umidade real do sensor
 int lerUmidadeReal() {
   long soma = 0;
-
-  // Lê 10 vezes para evitar erro
   for (int i = 0; i < 10; i++) {
     soma += analogRead(sensorSolo);
     delay(5);
   }
-
-  return soma / 10; // média
+  return soma / 10;
 }
 
-// SENSOR SIMULA CASO A SIMULAÇÃO ESTEJA ON
+// Função para ler a umidade, simulada ou real
 int lerUmidade() {
-  if (modoSimulacao) return random(0, 1024);
-  else return lerUmidadeReal();
+  if (modoSimulacao) {
+    int opcao = random(0, 3); // 0 = seco, 1 = ok, 2 = muito úmido
+    if (opcao == 0) return random(0, 301);      // solo seco
+    if (opcao == 1) return random(300, 701);    // solo ok
+    return random(700, 1024);                   // solo muito úmido
+  } else {
+    return lerUmidadeReal();
+  }
 }
 
+// Função para controlar LED RGB
 void setColor(int R, int G, int B) {
   analogWrite(pinR, R);
   analogWrite(pinG, G);
@@ -60,28 +65,24 @@ void loop() {
     tone(buzzer, 1000);
     digitalWrite(releBomba, HIGH);
     Serial.println("Solo seco! Buzzer e Irrigação ON");
-    delay(1000);
-    setColor(0, 0, 0);
-    delay(1000);
-  }
+  } 
   else if (umidade < 700) {
     // SOLO OK
     setColor(0, 255, 0);
     noTone(buzzer);
     digitalWrite(releBomba, LOW);
     Serial.println("Solo OK! Sistema OFF");
-    delay(1000);
-    setColor(0, 0, 0);
-    delay(1000);
-  }
+  } 
   else {
     // SOLO MUITO ÚMIDO
     setColor(255, 255, 0);
     noTone(buzzer);
     digitalWrite(releBomba, LOW);
     Serial.println("Solo úmido demais! Sistema OFF");
-    delay(1000);
-    setColor(0, 0, 0);
-    delay(1000);
   }
+
+  // Pisca LED 1 segundo aceso, 1 segundo apagado
+  delay(1000);
+  setColor(0, 0, 0);
+  delay(1000);
 }
