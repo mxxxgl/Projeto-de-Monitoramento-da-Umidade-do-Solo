@@ -3,8 +3,7 @@ const int pinG = 10;
 const int pinB = 11;
 
 const int sensorSolo = A0;
-
-const int buzzer = 6; // <<--- BUZZER ADICIONADO
+const int buzzer = 6; // BUZZER
 
 bool modoSimulacao = true; 
 
@@ -21,8 +20,7 @@ void setup() {
   pinMode(pinG, OUTPUT);
   pinMode(pinB, OUTPUT);
   pinMode(sensorSolo, INPUT); 
-  
-  pinMode(buzzer, OUTPUT); // <<--- CONFIGURA O BUZZER
+  pinMode(buzzer, OUTPUT); // BUZZER
 
   randomSeed(analogRead(A5)); 
 }
@@ -45,31 +43,32 @@ void loop() {
   if (umidade < 300) {
     // SOLO SECO
     setColor(255, 0, 0); 
-    tone(buzzer, 1000); // <<--- LIGA O BUZZER
+    tone(buzzer, 1000); 
     Serial.println("BUZZER ATIVO 🔔");
-    delay(500);
+    delay(1000);
 
     setColor(0, 0, 0); 
-    delay(500); 
+    delay(1000); 
   }
   else if (umidade >= 300 && umidade < 700) {
-    // UMIDADE MEDIA
+    // UMIDADE MÉDIA
     setColor(255, 255, 0);
-    noTone(buzzer); // <<--- DESLIGA O BUZZER
+    noTone(buzzer);
     Serial.println("BUZZER DESLIGADO 🚫");
-    delay(500);
+    delay(1000);
 
     setColor(0, 0, 0);
-    delay(500); 
+    delay(1000); 
   }
   else {
     // SOLO ÚMIDO
     setColor(0, 255, 0);
-    noTone(buzzer); // <<--- DESLIGA O BUZZER
+    noTone(buzzer);
     Serial.println("BUZZER DESLIGADO 🚫");
-    delay(500);
+    delay(1000);
 
     setColor(0, 0, 0); 
-    delay(500); 
+    delay(1000); 
   }
 }
+
